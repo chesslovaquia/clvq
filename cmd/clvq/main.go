@@ -3,5 +3,10 @@
 
 package main
 
+import (
+	"chesslovaquia.github.io/go/clvq"
+)
+
 func main() {
+	clvq.Main()
 }
