@@ -9,8 +9,19 @@ import (
 	"path"
 	"strings"
 
-	_ "chesslovaquia.github.io/go/clvq/cfg"
+	"chesslovaquia.github.io/go/clvq/tpl"
 )
+
+func Get(path string) (tpl.Tpl, error) {
+	return nil, nil
+}
+
+func ServeTpl(w http.ResponseWriter, r *http.Request, path string) {
+	Get(path)
+}
+
+func ServeFile(w http.ResponseWriter, r *http.Request, path string) {
+}
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 	reqPath := path.Clean(r.URL.Path)
@@ -21,6 +32,11 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	if ext == "" {
 		reqPath = path.Join(reqPath, "index.html")
 		ext = path.Ext(reqPath)
+	}
+	if ext == ".html" {
+		ServeTpl(w, r, reqPath)
+	} else {
+		ServeFile(w, r, reqPath)
 	}
 }
 
