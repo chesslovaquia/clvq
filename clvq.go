@@ -7,7 +7,9 @@ import (
 	"flag"
 	"log"
 
+	"chesslovaquia.github.io/go/clvq/build"
 	"chesslovaquia.github.io/go/clvq/cfg"
+	"chesslovaquia.github.io/go/clvq/http"
 )
 
 var die func(string, ...any)
@@ -18,9 +20,23 @@ func init() {
 
 func Main() {
 	configFilename := flag.String("config", "clvq.json", "config filename")
+	httpPort := flag.String("http", "8044", "http port")
+
+	runBuild := flag.Bool("build", false, "run site build")
+
 	flag.Parse()
 
 	if err := cfg.Load(*configFilename); err != nil {
 		die("[ERROR] load config: %v", err)
+	}
+
+	if *runBuild {
+		if err := build.Main(); err != nil {
+			die("[ERROR] build site: %v", err)
+		}
+	}
+
+	if err := http.Main(*httpPort); err != nil {
+		die("[ERROR] http server: %v", err)
 	}
 }
