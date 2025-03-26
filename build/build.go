@@ -4,9 +4,12 @@
 package build
 
 import (
+	"log"
+
 	_ "chesslovaquia.github.io/go/clvq/cfg"
 )
 
 func Main() error {
+	log.SetFlags(0)
 	return nil
 }
