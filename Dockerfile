@@ -71,8 +71,8 @@ ENV GOPATH /opt/go
 
 RUN go version
 
-###WORKDIR ${SRCD}
-###RUN make all
+WORKDIR ${SRCD}
+RUN make all
 
 WORKDIR ${SRCD}
 ENTRYPOINT /usr/local/bin/user-login.sh
