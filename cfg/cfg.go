@@ -8,18 +8,38 @@ import (
 	"os"
 )
 
+// tpl
+
+var Tpl *ConfigTpl
+
+type ConfigTpl struct{
+	Dir string
+}
+
+func newConfigTpl() *ConfigTpl {
+	return &ConfigTpl{
+		Dir: "tpl",
+	}
+}
+
+// cfg
+
 type Config struct {
 	path string
+	Tpl *ConfigTpl
 }
 
 var cfg *Config
 
 func init() {
+	Tpl = newConfigTpl()
 	cfg = newConfig()
 }
 
 func newConfig() *Config {
-	return &Config{}
+	return &Config{
+		Tpl: Tpl,
+	}
 }
 
 func Save(path string) error {
