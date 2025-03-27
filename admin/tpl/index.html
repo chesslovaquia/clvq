@@ -1,0 +1,23 @@
+{{ define "title" }}admin{{ end }}
+
+{{ define "content" }}
+<div id="root" class="w3-content w3-center">
+
+	<h1 class="w3-blue">{{ .Project }}</h1>
+
+	<div class="w3-container">
+
+		<p class="w3-justify">
+			<a href="{{ .Root }}/">site</a>
+			<a href="{{ .Root }}/_/config.json">config.json</a>
+			<a href="{{ .Root }}/_/tpl/build.sh">tpl/build.sh</a>
+		</p>
+
+		<p class="w3-justify">
+			{{ template "pages.html" . }}
+		</p>
+
+	</div>
+
+</div>
+{{ end }}
