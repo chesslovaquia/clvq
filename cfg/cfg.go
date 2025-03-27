@@ -25,8 +25,9 @@ func newConfigTpl() *ConfigTpl {
 // cfg
 
 type Config struct {
-	path string
-	Tpl  *ConfigTpl
+	path      string
+	Tpl       *ConfigTpl
+	StaticDir string
 }
 
 var cfg *Config
@@ -38,7 +39,8 @@ func init() {
 
 func newConfig() *Config {
 	return &Config{
-		Tpl: Tpl,
+		Tpl:       Tpl,
+		StaticDir: "static",
 	}
 }
 
@@ -81,4 +83,8 @@ func Load(path string) error {
 	}
 	cfg.path = path
 	return nil
+}
+
+func StaticDir() string {
+	return cfg.StaticDir
 }
