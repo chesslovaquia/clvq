@@ -23,7 +23,13 @@ func ServeTpl(w http.ResponseWriter, r *http.Request, path string) {
 func ServeFile(w http.ResponseWriter, r *http.Request, path string) {
 }
 
-func Handler(w http.ResponseWriter, r *http.Request) {
+type Handler struct{}
+
+func newHandler() *Handler {
+	return &Handler{}
+}
+
+func (h *Handler) Handle(w http.ResponseWriter, r *http.Request) {
 	reqPath := path.Clean(r.URL.Path)
 	if strings.HasSuffix(reqPath, "/") {
 		reqPath = path.Join(reqPath, "index.html")
@@ -40,10 +46,21 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+var handlers map[string]*Handler
+
+func init() {
+	handlers = make(map[string]*Handler)
+}
+
+func AddHandler(path string) {
+	handlers[path] = newHandler()
+	http.HandleFunc("/", handlers[path].Handle)
+}
+
 func Main(port string) error {
 	log.Printf("starting http server on port: %s", port)
 
-	http.HandleFunc("/", Handler)
+	AddHandler("/")
 
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		return err
