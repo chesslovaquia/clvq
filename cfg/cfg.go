@@ -12,7 +12,7 @@ import (
 
 var Tpl *ConfigTpl
 
-type ConfigTpl struct{
+type ConfigTpl struct {
 	Dir string
 }
 
@@ -26,7 +26,7 @@ func newConfigTpl() *ConfigTpl {
 
 type Config struct {
 	path string
-	Tpl *ConfigTpl
+	Tpl  *ConfigTpl
 }
 
 var cfg *Config

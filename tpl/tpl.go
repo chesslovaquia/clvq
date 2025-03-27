@@ -12,6 +12,8 @@ import (
 var _ Tpl = &TplBase{}
 
 type Tpl interface {
+	BaseFile() string
+	Path() string
 	Get(path string) (*template.Template, error)
 }
 
@@ -19,6 +21,14 @@ type TplBase struct{}
 
 func New() *TplBase {
 	return &TplBase{}
+}
+
+func (t *TplBase) BaseFile() string {
+	return "FIXME.html"
+}
+
+func (t *TplBase) Path() string {
+	return "FIXME.html"
 }
 
 func (t *TplBase) Get(path string) (*template.Template, error) {
