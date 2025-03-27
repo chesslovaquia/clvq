@@ -1,16 +1,14 @@
 // Copyright Jeremías Casteglione <jrmsdev@gmail.com>
 // See LICENSE file.
 
-package tpl
+package admin
 
 import (
 	_ "chesslovaquia.github.io/go/clvq/cfg"
 )
 
-type Tpl interface{}
+type Tpl struct{}
 
-type TplBase struct{}
-
-func New() *TplBase {
-	return &TplBase{}
+func NewTpl() *Tpl {
+	return &Tpl{}
 }

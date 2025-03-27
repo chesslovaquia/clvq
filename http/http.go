@@ -9,8 +9,20 @@ import (
 	"path"
 	"strings"
 
+	"chesslovaquia.github.io/go/clvq/admin"
 	"chesslovaquia.github.io/go/clvq/tpl"
 )
+
+var handlers map[string]*Handler
+
+func init() {
+	handlers = make(map[string]*Handler)
+}
+
+func AddHandler(path string, template tpl.Tpl) {
+	handlers[path] = newHandler(template)
+	http.HandleFunc(path, handlers[path].Handle)
+}
 
 func Get(path string) (tpl.Tpl, error) {
 	return nil, nil
@@ -23,10 +35,14 @@ func ServeTpl(w http.ResponseWriter, r *http.Request, path string) {
 func ServeFile(w http.ResponseWriter, r *http.Request, path string) {
 }
 
-type Handler struct{}
+type Handler struct {
+	template tpl.Tpl
+}
 
-func newHandler() *Handler {
-	return &Handler{}
+func newHandler(template tpl.Tpl) *Handler {
+	return &Handler{
+		template: template,
+	}
 }
 
 func (h *Handler) Handle(w http.ResponseWriter, r *http.Request) {
@@ -46,21 +62,11 @@ func (h *Handler) Handle(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-var handlers map[string]*Handler
-
-func init() {
-	handlers = make(map[string]*Handler)
-}
-
-func AddHandler(path string) {
-	handlers[path] = newHandler()
-	http.HandleFunc("/", handlers[path].Handle)
-}
-
 func Main(port string) error {
 	log.Printf("starting http server on port: %s", port)
 
-	AddHandler("/")
+	AddHandler("/_/", admin.NewTpl())
+	AddHandler("/", tpl.New())
 
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		return err
