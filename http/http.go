@@ -68,8 +68,6 @@ func Main(port string) error {
 	http.Handle("/_/static/", http.StripPrefix("/_/", http.FileServer(http.FS(admin.StaticFS))))
 	AddHandler("/_/", admin.NewTpl())
 
-	AddHandler("/", tpl.New())
-
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		return err
 	}

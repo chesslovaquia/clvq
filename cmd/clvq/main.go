@@ -5,8 +5,10 @@ package main
 
 import (
 	"chesslovaquia.github.io/go/clvq"
+	"chesslovaquia.github.io/go/clvq/tpl"
 )
 
 func main() {
+	clvq.AddHandler("/", tpl.New())
 	clvq.Main()
 }

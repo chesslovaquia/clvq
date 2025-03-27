@@ -10,6 +10,7 @@ import (
 	"chesslovaquia.github.io/go/clvq/build"
 	"chesslovaquia.github.io/go/clvq/cfg"
 	"chesslovaquia.github.io/go/clvq/http"
+	"chesslovaquia.github.io/go/clvq/tpl"
 )
 
 var die func(string, ...any)
@@ -39,4 +40,8 @@ func Main() {
 	if err := http.Main(*httpPort); err != nil {
 		die("[ERROR] http server: %v", err)
 	}
+}
+
+func AddHandler(path string, template tpl.Tpl) {
+	http.AddHandler(path, template)
 }
