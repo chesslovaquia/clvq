@@ -7,6 +7,7 @@ import (
 	"embed"
 	"html/template"
 	"path/filepath"
+	"strings"
 	"sync"
 
 	"chesslovaquia.github.io/go/clvq/tpl"
@@ -15,6 +16,7 @@ import (
 )
 
 var _ tpl.Tpl = &Tpl{}
+var _ tpl.Data = &TplData{}
 
 //go:embed static
 var StaticFS embed.FS
@@ -22,36 +24,44 @@ var StaticFS embed.FS
 //go:embed tpl
 var fs embed.FS
 
+type TplData struct {
+	Root string
+	Site string
+}
+
+func newTplData(path string) *TplData {
+	return &TplData{
+		Root: "/_",
+		Site: "clvq",
+	}
+}
+
 type Tpl struct {
 	mutex sync.Mutex
-	path  string
 }
 
 func NewTpl() *Tpl {
-	return &Tpl{
-		path: "/_.html",
-	}
+	return &Tpl{}
 }
 
 func (t *Tpl) BaseFile() string {
 	return filepath.Join("tpl", "base.html")
 }
 
-func (t *Tpl) Path() string {
-	return filepath.Join("tpl", t.path)
+func (t *Tpl) Filepath(path string) string {
+	return filepath.Join("tpl", strings.TrimPrefix(path, "/_/"))
 }
 
-func (t *Tpl) load(path string) (*template.Template, error) {
-	t.path = path
-	tmplt, err := template.ParseFS(fs, t.BaseFile(), t.Path())
+func (t *Tpl) Get(path string) (*template.Template, error) {
+	t.mutex.Lock()
+	defer t.mutex.Unlock()
+	tmplt, err := template.ParseFS(fs, t.BaseFile(), t.Filepath(path))
 	if err != nil {
 		return nil, err
 	}
 	return tmplt, nil
 }
 
-func (t *Tpl) Get(path string) (*template.Template, error) {
-	t.mutex.Lock()
-	defer t.mutex.Unlock()
-	return t.load(path)
+func (t *Tpl) GetData(path string) tpl.Data {
+	return newTplData(path)
 }

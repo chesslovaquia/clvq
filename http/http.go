@@ -6,6 +6,7 @@ package http
 import (
 	"log"
 	"net/http"
+	"os"
 	"path"
 	"strings"
 
@@ -24,14 +25,6 @@ func AddHandler(path string, template tpl.Tpl) {
 	http.HandleFunc(path, handlers[path].Handle)
 }
 
-func Get(path string) (tpl.Tpl, error) {
-	return nil, nil
-}
-
-func ServeTpl(w http.ResponseWriter, r *http.Request, path string) {
-	Get(path)
-}
-
 func ServeFile(w http.ResponseWriter, r *http.Request, path string) {
 }
 
@@ -45,6 +38,24 @@ func newHandler(template tpl.Tpl) *Handler {
 	}
 }
 
+func (h *Handler) ServeTpl(w http.ResponseWriter, r *http.Request, path string) {
+	tmplt, err := h.template.Get(path)
+	if err != nil {
+		if _, err := os.Stat(h.template.Filepath(path)); os.IsNotExist(err) {
+			log.Printf("404 %s - %v", path, err)
+			http.Error(w, "404 - not found", http.StatusNotFound)
+			return
+		}
+	}
+	data := h.template.GetData(path)
+	if err := tmplt.Execute(w, data); err != nil {
+		log.Printf("500 %s - %v", path, err)
+		http.Error(w, "500 - failed to render template", http.StatusInternalServerError)
+		return
+	}
+	log.Printf("200 %s - %s %s", path, h.template.BaseFile(), h.template.Filepath(path))
+}
+
 func (h *Handler) Handle(w http.ResponseWriter, r *http.Request) {
 	reqPath := path.Clean(r.URL.Path)
 	if strings.HasSuffix(reqPath, "/") {
@@ -56,7 +67,7 @@ func (h *Handler) Handle(w http.ResponseWriter, r *http.Request) {
 		ext = path.Ext(reqPath)
 	}
 	if ext == ".html" {
-		ServeTpl(w, r, reqPath)
+		h.ServeTpl(w, r, reqPath)
 	} else {
 		ServeFile(w, r, reqPath)
 	}

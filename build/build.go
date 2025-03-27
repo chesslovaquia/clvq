@@ -6,11 +6,10 @@ package build
 import (
 	"log"
 
-	"chesslovaquia.github.io/go/clvq/http"
+	_ "chesslovaquia.github.io/go/clvq/cfg"
 )
 
 func Main() error {
 	log.SetFlags(0)
-	http.Get("/")
 	return nil
 }
