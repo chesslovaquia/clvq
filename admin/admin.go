@@ -5,8 +5,6 @@ package admin
 
 import (
 	"embed"
-
-	_ "chesslovaquia.github.io/go/clvq/cfg"
 )
 
 //go:embed tpl
