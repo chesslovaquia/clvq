@@ -29,11 +29,11 @@ func New() *TplBase {
 }
 
 func (t *TplBase) BaseFile() string {
-	return filepath.Join(cfg.Tpl.Dir, cfg.Tpl.Base)
+	return filepath.Join(cfg.TplDir(), cfg.TplBase())
 }
 
 func (t *TplBase) Filepath(path string) string {
-	return filepath.Join(cfg.Tpl.Dir, path)
+	return filepath.Join(cfg.TplDir(), path)
 }
 
 func (t *TplBase) Get(path string) (*template.Template, error) {

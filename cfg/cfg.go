@@ -10,17 +10,17 @@ import (
 
 // tpl
 
-var Tpl *ConfigTpl
+var Tpl *TplData
 
-type ConfigTpl struct {
-	Dir  string
-	Base string
+type TplData struct {
+	Root string
+	Site string
 }
 
-func newConfigTpl() *ConfigTpl {
-	return &ConfigTpl{
-		Dir:  "tpl",
-		Base: "base.html",
+func newTplData() *TplData {
+	return &TplData{
+		Root: "",
+		Site: "clvq",
 	}
 }
 
@@ -28,14 +28,16 @@ func newConfigTpl() *ConfigTpl {
 
 type Config struct {
 	path      string
-	Tpl       *ConfigTpl
+	Tpl       *TplData
 	StaticDir string
+	TplDir    string
+	TplBase   string
 }
 
 var cfg *Config
 
 func init() {
-	Tpl = newConfigTpl()
+	Tpl = newTplData()
 	cfg = newConfig()
 }
 
@@ -43,6 +45,8 @@ func newConfig() *Config {
 	return &Config{
 		Tpl:       Tpl,
 		StaticDir: "static",
+		TplDir:    "tpl",
+		TplBase:   "base.html",
 	}
 }
 
@@ -89,4 +93,12 @@ func Load(path string) error {
 
 func StaticDir() string {
 	return cfg.StaticDir
+}
+
+func TplDir() string {
+	return cfg.TplDir
+}
+
+func TplBase() string {
+	return cfg.TplBase
 }

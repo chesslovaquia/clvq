@@ -10,9 +10,8 @@ import (
 	"strings"
 	"sync"
 
+	"chesslovaquia.github.io/go/clvq/cfg"
 	"chesslovaquia.github.io/go/clvq/tpl"
-
-	_ "chesslovaquia.github.io/go/clvq/cfg"
 )
 
 var _ tpl.Tpl = &Tpl{}
@@ -24,17 +23,23 @@ var StaticFS embed.FS
 //go:embed tpl
 var fs embed.FS
 
-type TplData struct {
-	Root string
-	Site string
-}
+// TplData
+
+type TplData struct{}
 
 func newTplData(path string) *TplData {
-	return &TplData{
-		Root: "/_",
-		Site: "clvq",
-	}
+	return &TplData{}
 }
+
+func (d *TplData) Root() string {
+	return cfg.Tpl.Root
+}
+
+func (d *TplData) Site() string {
+	return cfg.Tpl.Site
+}
+
+// Tpl
 
 type Tpl struct {
 	mutex sync.Mutex
