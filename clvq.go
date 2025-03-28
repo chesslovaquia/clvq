@@ -35,6 +35,7 @@ func Main() {
 		if err := build.Main(); err != nil {
 			die("[ERROR] build site: %v", err)
 		}
+		return
 	}
 
 	if err := http.Main(*httpPort); err != nil {
