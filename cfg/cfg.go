@@ -13,12 +13,14 @@ import (
 var Tpl *ConfigTpl
 
 type ConfigTpl struct {
-	Dir string
+	Dir  string
+	Base string
 }
 
 func newConfigTpl() *ConfigTpl {
 	return &ConfigTpl{
-		Dir: "tpl",
+		Dir:  "tpl",
+		Base: "base.html",
 	}
 }
 

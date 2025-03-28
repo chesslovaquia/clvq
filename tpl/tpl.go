@@ -6,6 +6,7 @@ package tpl
 import (
 	"html/template"
 	"path/filepath"
+	"sync"
 
 	"chesslovaquia.github.io/go/clvq/cfg"
 )
@@ -19,14 +20,16 @@ type Tpl interface {
 	GetData(path string) Data
 }
 
-type TplBase struct{}
+type TplBase struct {
+	mutex sync.Mutex
+}
 
 func New() *TplBase {
 	return &TplBase{}
 }
 
 func (t *TplBase) BaseFile() string {
-	return "FIXME.html"
+	return filepath.Join(cfg.Tpl.Dir, cfg.Tpl.Base)
 }
 
 func (t *TplBase) Filepath(path string) string {
@@ -34,7 +37,13 @@ func (t *TplBase) Filepath(path string) string {
 }
 
 func (t *TplBase) Get(path string) (*template.Template, error) {
-	return nil, nil
+	t.mutex.Lock()
+	defer t.mutex.Unlock()
+	tmplt, err := template.ParseFiles(t.BaseFile(), t.Filepath(path))
+	if err != nil {
+		return nil, err
+	}
+	return tmplt, nil
 }
 
 func (t *TplBase) GetData(path string) Data {
