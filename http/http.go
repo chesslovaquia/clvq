@@ -41,7 +41,7 @@ func newHandler(template tpl.Tpl) *Handler {
 func (h *Handler) ServeFile(w http.ResponseWriter, r *http.Request, path string) {
 	var fn string
 	if strings.HasPrefix(path, "/.clvq/") {
-		fn = filepath.Join("/opt/go/src/clvq/base/static", strings.TrimPrefix(path, "/.clvq/"))
+		fn = filepath.Join("/opt/src/site/static", strings.TrimPrefix(path, "/.clvq/"))
 	} else {
 		fn = filepath.Join(cfg.StaticDir(), path)
 	}

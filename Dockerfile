@@ -47,19 +47,21 @@ RUN groupadd -o -g ${DEVEL_GID} devel \
 RUN printf 'umask %s\n' '027' >>/home/devel/.profile
 RUN printf "export PS1='%s '\n" '\u@\h:\W\$' >>/home/devel/.profile
 
-RUN install -v -m 0750 -o devel -g devel -d /opt/go
-RUN install -v -m 0750 -o devel -g devel -d /opt/go/src
-RUN install -v -m 0750 -o devel -g devel -d /opt/go/src/clvq
+RUN install -v -m 0750 -o devel -g devel -d /opt/bin
+RUN install -v -m 0750 -o devel -g devel -d /opt/src
+RUN install -v -m 0750 -o devel -g devel -d /opt/pkg
 
-COPY . /opt/go/src/clvq
+RUN install -v -m 0750 -o devel -g devel -d /opt/src/clvq
 
-ENV SRCD /opt/go/src/clvq
+COPY . /opt/src/clvq
+
+ENV SRCD /opt/src/clvq
 
 RUN chown -R devel:devel ${SRCD}
 
 RUN install -v -m 0755 ${SRCD}/docker/user-login.sh /usr/local/bin/user-login.sh
 
-RUN ln -vsf /opt/go/bin/clvq /usr/local/bin/clvq
+RUN ln -vsf /opt/bin/clvq /usr/local/bin/clvq
 
 USER devel:devel
 WORKDIR /home/devel
@@ -67,12 +69,11 @@ WORKDIR /home/devel
 ENV USER devel
 ENV HOME /home/devel
 
-ENV GOPATH /opt/go
+ENV GOPATH /opt
 
 RUN go version
 
 WORKDIR ${SRCD}
 RUN make all
 
-WORKDIR ${SRCD}
 ENTRYPOINT /usr/local/bin/user-login.sh
