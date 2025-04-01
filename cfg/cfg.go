@@ -50,6 +50,10 @@ func newConfig() *Config {
 	}
 }
 
+func Get() *Config {
+	return cfg
+}
+
 func Save(path string) error {
 	fh, err := os.Create(path)
 	if err != nil {

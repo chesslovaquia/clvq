@@ -5,7 +5,11 @@ package admin
 
 import (
 	"embed"
+	"encoding/json"
 	"html/template"
+	"log"
+	"mime"
+	"net/http"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -69,4 +73,18 @@ func (t *Tpl) Get(path string) (*template.Template, error) {
 
 func (t *Tpl) GetData(path string) tpl.Data {
 	return newTplData(path)
+}
+
+// config.json
+
+func ConfigJSONHandler(w http.ResponseWriter, r *http.Request) {
+	mimeType := mime.TypeByExtension(".json")
+	w.Header().Set("Content-Type", mimeType)
+	w.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(w).Encode(cfg.Get()); err != nil {
+		log.Printf("500 /_/config.json - %v", err)
+		http.Error(w, "500 - Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+	log.Println("200 /_/config.json")
 }

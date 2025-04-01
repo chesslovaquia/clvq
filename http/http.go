@@ -96,6 +96,7 @@ func Main(port string) error {
 	log.Printf("starting http server on port: %s", port)
 
 	http.Handle("/_/static/", http.StripPrefix("/_/", http.FileServer(http.FS(admin.StaticFS))))
+	http.HandleFunc("/_/config.json", admin.ConfigJSONHandler)
 	AddHandler("/_/", admin.NewTpl())
 
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
