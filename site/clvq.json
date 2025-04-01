@@ -1,0 +1,7 @@
+{
+	"Tpl": {
+		"Site": "clvq"
+	},
+	"StaticDir": "site/static",
+	"TplDir": "site/tpl"
+}
