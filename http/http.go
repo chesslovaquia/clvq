@@ -40,8 +40,8 @@ func (h *Handler) ServeFile(w http.ResponseWriter, r *http.Request, path string)
 		fn = filepath.Join(cfg.StaticDir(), path)
 	}
 	if _, err := os.Stat(fn); os.IsNotExist(err) {
-		log.Printf("404 %s - %v", path, err)
 		http.Error(w, "404 - not found", http.StatusNotFound)
+		log.Printf("404 %s - %v", path, err)
 		return
 	}
 	ext := filepath.Ext(fn)
@@ -55,15 +55,15 @@ func (h *Handler) ServeTpl(w http.ResponseWriter, r *http.Request, path string) 
 	tmplt, err := h.tpl.Get(path)
 	if err != nil {
 		if _, err := os.Stat(h.tpl.Filepath(path)); os.IsNotExist(err) {
-			log.Printf("404 %s - %v", path, err)
 			http.Error(w, "404 - not found", http.StatusNotFound)
+			log.Printf("404 %s - %v", path, err)
 			return
 		}
 	}
 	data := h.tpl.GetData(path)
 	if err := tmplt.Execute(w, data); err != nil {
-		log.Printf("500 %s - %v", path, err)
 		http.Error(w, "500 - failed to render template", http.StatusInternalServerError)
+		log.Printf("500 %s - %v", path, err)
 		return
 	}
 	log.Printf("200 %s - %s %s", path, h.tpl.BaseFile(), h.tpl.Filepath(path))

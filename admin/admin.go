@@ -82,8 +82,8 @@ func ConfigJSONHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", mimeType)
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(cfg.Get()); err != nil {
-		log.Printf("500 /_/config.json - %v", err)
 		http.Error(w, "500 - Internal Server Error", http.StatusInternalServerError)
+		log.Printf("500 /_/config.json - %v", err)
 		return
 	}
 	log.Println("200 /_/config.json")
