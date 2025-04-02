@@ -17,15 +17,9 @@ import (
 	"chesslovaquia.github.io/go/clvq/tpl"
 )
 
-var handlers map[string]*Handler
-
-func init() {
-	handlers = make(map[string]*Handler)
-}
-
 func AddHandler(path string, template tpl.Tpl) {
-	handlers[path] = newHandler(template)
-	http.HandleFunc(path, handlers[path].Handle)
+	h := newHandler(template)
+	http.HandleFunc(path, h.Handle)
 }
 
 type Handler struct {
