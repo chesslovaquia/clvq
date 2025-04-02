@@ -2,6 +2,6 @@
 	"Tpl": {
 		"Site": "clvq"
 	},
-	"StaticDir": "static",
+	"StaticDir": "site/static",
 	"TplDir": "site/tpl"
 }
