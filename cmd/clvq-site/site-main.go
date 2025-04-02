@@ -4,9 +4,11 @@
 package main
 
 import (
-	"chesslovaquia.github.io/go/clvq/site"
+	"chesslovaquia.github.io/go/clvq"
+	"chesslovaquia.github.io/go/clvq/tpl"
 )
 
 func main() {
-	site.Main()
+	clvq.AddHandler("/", tpl.New())
+	clvq.Main()
 }

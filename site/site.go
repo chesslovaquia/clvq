@@ -4,11 +4,8 @@
 package site
 
 import (
-	"chesslovaquia.github.io/go/clvq"
-	"chesslovaquia.github.io/go/clvq/tpl"
+	"embed"
 )
 
-func Main() {
-	clvq.AddHandler("/", tpl.New())
-	clvq.Main()
-}
+//go:embed static
+var StaticFS embed.FS

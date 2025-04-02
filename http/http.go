@@ -14,6 +14,7 @@ import (
 
 	"chesslovaquia.github.io/go/clvq/admin"
 	"chesslovaquia.github.io/go/clvq/cfg"
+	"chesslovaquia.github.io/go/clvq/site"
 	"chesslovaquia.github.io/go/clvq/tpl"
 )
 
@@ -91,7 +92,7 @@ func Main(port string) error {
 	log.Printf("static dir: %s", cfg.StaticDir())
 	log.Printf("tpl dir: %s", cfg.TplDir())
 
-	http.Handle("/_/static/", http.StripPrefix("/_/", http.FileServer(http.FS(admin.StaticFS))))
+	http.Handle("/_/static/", http.StripPrefix("/_/", http.FileServer(http.FS(site.StaticFS))))
 	http.HandleFunc("/_/config.json", admin.ConfigJSONHandler)
 	AddHandler("/_/", admin.NewTpl())
 

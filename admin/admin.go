@@ -21,9 +21,6 @@ import (
 var _ tpl.Tpl = &Tpl{}
 var _ tpl.Data = &TplData{}
 
-//go:embed static
-var StaticFS embed.FS
-
 //go:embed tpl
 var fs embed.FS
 
