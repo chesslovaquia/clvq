@@ -16,6 +16,7 @@ all: build
 .PHONY: build
 build:
 	go install ./cmd/clvq
+	go install ./cmd/clvq-site
 
 .PHONY: upgrade
 upgrade:
