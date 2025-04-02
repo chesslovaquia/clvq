@@ -92,7 +92,7 @@ func Main(port string) error {
 	log.Printf("static dir: %s", cfg.StaticDir())
 	log.Printf("tpl dir: %s", cfg.TplDir())
 
-	http.Handle("/_/static/", http.StripPrefix("/_/", http.FileServer(http.FS(site.StaticFS))))
+	http.HandleFunc("/clvq/", site.ServeStaticFS)
 	http.HandleFunc("/_/config.json", admin.ConfigJSONHandler)
 	AddHandler("/_/", admin.NewTpl())
 
