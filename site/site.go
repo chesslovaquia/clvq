@@ -18,6 +18,6 @@ var staticFS embed.FS
 func ServeStaticFS(w http.ResponseWriter, r *http.Request) {
 	p := strings.TrimPrefix(path.Clean(r.URL.Path), "/clvq/")
 	fn := filepath.Join("static", p)
-	log.Printf("000 %s - site:%s", p, fn)
+	log.Printf("999 %s - site:%s", p, fn)
 	http.ServeFileFS(w, r, staticFS, fn)
 }
