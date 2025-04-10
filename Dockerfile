@@ -53,6 +53,9 @@ RUN install -v -m 0750 -o devel -g devel -d /opt/pkg
 
 RUN install -v -m 0750 -o devel -g devel -d /opt/src/clvq
 
+RUN ln -vsf /opt/bin/clvq /usr/local/bin/clvq
+RUN ln -vsf /opt/bin/clvq-site /usr/local/bin/clvq-site
+
 COPY . /opt/src/clvq
 
 ENV SRCD /opt/src/clvq
@@ -60,8 +63,6 @@ ENV SRCD /opt/src/clvq
 RUN chown -R devel:devel ${SRCD}
 
 RUN install -v -m 0755 ${SRCD}/docker/user-login.sh /usr/local/bin/user-login.sh
-
-RUN ln -vsf /opt/bin/clvq /usr/local/bin/clvq
 
 USER devel:devel
 WORKDIR /home/devel
