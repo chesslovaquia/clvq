@@ -14,6 +14,7 @@ import (
 
 	"chesslovaquia.github.io/go/clvq/admin"
 	"chesslovaquia.github.io/go/clvq/cfg"
+	"chesslovaquia.github.io/go/clvq/env"
 	"chesslovaquia.github.io/go/clvq/site"
 	"chesslovaquia.github.io/go/clvq/tpl"
 )
@@ -95,6 +96,8 @@ func Main(port string) error {
 	http.HandleFunc("/clvq/", site.ServeStaticFS)
 	http.HandleFunc("/_/config.json", admin.ConfigJSONHandler)
 	AddHandler("/_/", admin.NewTpl())
+
+	log.Printf("admin tpl dev: %v", env.AdminTplDev)
 
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		return err
