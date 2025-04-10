@@ -6,6 +6,8 @@ package admin
 import (
 	"path/filepath"
 	"strings"
+	"sync"
+	"html/template"
 
 	"chesslovaquia.github.io/go/clvq/cfg"
 	"chesslovaquia.github.io/go/clvq/tpl"
@@ -33,11 +35,11 @@ func (d *TplDevData) Site() string {
 // TplDev
 
 type TplDev struct {
-	*tpl.TplBase
+	mutex sync.Mutex
 }
 
-func newTplDev(path string) *TplDev {
-	return &TplDev{tpl.New()}
+func newTplDev() *TplDev {
+	return &TplDev{}
 }
 
 func (t *TplDev) BaseFile() string {
@@ -46,6 +48,16 @@ func (t *TplDev) BaseFile() string {
 
 func (t *TplDev) Filepath(path string) string {
 	return filepath.Join("admin", "tpl", strings.TrimPrefix(path, "/_/"))
+}
+
+func (t *TplDev) Get(path string) (*template.Template, error) {
+	t.mutex.Lock()
+	defer t.mutex.Unlock()
+	tmplt, err := template.ParseFiles(t.BaseFile(), t.Filepath(path))
+	if err != nil {
+		return nil, err
+	}
+	return tmplt, nil
 }
 
 func (t *TplDev) GetData(path string) tpl.Data {

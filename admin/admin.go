@@ -15,6 +15,7 @@ import (
 	"sync"
 
 	"chesslovaquia.github.io/go/clvq/cfg"
+	"chesslovaquia.github.io/go/clvq/env"
 	"chesslovaquia.github.io/go/clvq/tpl"
 )
 
@@ -46,8 +47,15 @@ type Tpl struct {
 	mutex sync.Mutex
 }
 
-func NewTpl() *Tpl {
+func newTpl() *Tpl {
 	return &Tpl{}
+}
+
+func NewTpl() tpl.Tpl {
+	if env.AdminTplDev {
+		return newTplDev()
+	}
+	return newTpl()
 }
 
 func (t *Tpl) BaseFile() string {
