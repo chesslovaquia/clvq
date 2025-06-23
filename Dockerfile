@@ -1,4 +1,4 @@
-FROM debian:trixie-20250317-slim
+FROM debian:trixie-20250610-slim
 
 LABEL maintainer="Jeremías Casteglione <jrmsdev@gmail.com>"
 LABEL version="250326"
